@@ -12,6 +12,15 @@ var connection = mysql.createConnection({
 connection.connect();
 
 // Setup a route to handle React's first request
+router.get('/getTasks', function(req, res, next) {
+	connection.query('SELECT * FROM tasks', (error, results)=>{
+		if (error) throw error;
+		res.json(results);
+	})
+});
+
+
+// Setup a route to handle React's first request
 router.get('/getStudents', function(req, res, next) {
 	connection.query('SELECT * FROM students', (error, results)=>{
 		if (error) throw error;
