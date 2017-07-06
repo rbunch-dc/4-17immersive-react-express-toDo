@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import $ from 'jquery'
+import {Redirect} from 'react-router-dom'
 
 class Delete extends Component{
 	constructor(props) {
@@ -29,16 +30,14 @@ class Delete extends Component{
 	      	taskId: taskId,
 	      }
 	    }).done((tasksArray)=>{
-	      this.setState({
-	        taskList: tasksArray
-	      })
-	    })	
-
-		console.log("Delete!!")
+			this.props.history.push('/');
+			console.log("Delete!!")
+	    });
 	}
 
 	runForCover(){
 		console.log('Don\'t Delete')
+		this.props.history.push('/');
 	}
 
 	render(){
