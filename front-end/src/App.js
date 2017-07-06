@@ -12,20 +12,31 @@ class App extends Component {
     }
   }
 
+  // compondentDidMount runs AFTER the first render
   componentDidMount() {
+    // getJSON request to localhost:3000 ... that's where Express is listening
     $.getJSON('http://localhost:3000/getStudents', (studentsFromApi)=>{
+      // log the JSON response from Express
       console.log(studentsFromApi)
+      this.setState({
+        theClass: studentsFromApi.students
+      })
     });
-    this.setState({
-      theClass: [1,2,3,4]
-    })
+    // Update the state... this will cause a re-render
+    // this.setState({
+    //   theClass: [1,2,3,4]
+    // })
   }
 
   render() {
 
+    // Create an array to dump into our return. It will contain
+    // components or HTML tags
     var theClassArray = [];
-    this.state.theClass.map((student,index)=>{
-      theClassArray.push(<li key={index}>Student</li>);
+    // Loop throuhg our state var. The frist time through, it will be empty
+    this.state.theClass.map((mightyDucks,index)=>{
+      // push an li tag onto our array for each element in the state var
+      theClassArray.push(<li key={index}>{mightyDucks}</li>);
     });
 
     return (
