@@ -19,6 +19,25 @@ router.get('/getTasks', function(req, res, next) {
 	})
 });
 
+router.get('/getTask/:id', (req,res)=>{
+	connection.query(`SELECT * FROM tasks WHERE id=${req.params.id}`,(error,results)=>{
+		if(results.length == 0){
+			res.json({msg:"noResult"})
+		}else{
+			res.json(results[0])
+		}
+	})
+})
+
+router.post('/deleteTask', (req,res)=>{
+	connection.query('DELETE FROM tasks WHERE id = '+req.body.taskId,(error, results)=>{
+		if(error) throw error;
+		res.json({
+			msg: "success"
+		})
+	})
+})
+
 router.post('/addTask', (req,res)=>{
 	var newTask = req.body.taskName;
 	var newTaskDate = req.body.taskDate;
