@@ -19,6 +19,19 @@ router.get('/getTasks', function(req, res, next) {
 	})
 });
 
+router.post('/addTask', (req,res)=>{
+	var newTask = req.body.taskName;
+	var newTaskDate = req.body.taskDate;
+	connection.query('INSERT INTO tasks (task_name, task_date) VALUES (?, ?)', [newTask,newTaskDate], (error, results)=>{
+		if (error) throw error;
+		connection.query('SELECT * FROM tasks', (error2, results2)=>{
+			if (error2) throw error2;
+			res.json(results2);
+		})		
+	})
+	// res.json({msg:"test"})
+});
+
 
 // Setup a route to handle React's first request
 router.get('/getStudents', function(req, res, next) {

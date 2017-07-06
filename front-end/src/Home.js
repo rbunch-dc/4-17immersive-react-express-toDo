@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import logo from './logo.svg';
+import { Link } from 'react-router-dom';
 
 class Home extends Component{
 	constructor(props) {
@@ -8,6 +9,8 @@ class Home extends Component{
 		this.state = {
 			taskList: []
 		}
+		// Make sure addNewTask uses the class "this"
+		this.addNewTask = this.addNewTask.bind(this)
 	}
 
   // compondentDidMount runs AFTER the first render
@@ -62,7 +65,7 @@ class Home extends Component{
 	    // Loop throuhg our state var. The frist time through, it will be empty
 	    this.state.taskList.map((task,index)=>{
 	      // push an li tag onto our array for each element in the state var
-	      taskArray.push(<li key={index}>{task.task_name}</li>);
+	      taskArray.push(<Link key={index} to={`/task/delete/${task.id}`}><li key={index}>{task.task_name}</li></Link>);
 	    });		
 
 		return(
