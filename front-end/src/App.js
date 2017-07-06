@@ -7,7 +7,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      theClass: []
+      theClass: [],
+      teacher: "Rob"
     }
   }
 
@@ -15,6 +16,9 @@ class App extends Component {
     $.getJSON('http://localhost:3000/getStudents', (studentsFromApi)=>{
       console.log(studentsFromApi)
     });
+    this.setState({
+      theClass: [1,2,3,4]
+    })
   }
 
   render() {
