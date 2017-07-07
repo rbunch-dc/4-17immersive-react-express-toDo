@@ -66,11 +66,11 @@ class Home extends Component{
 	    this.state.taskList.map((task,index)=>{
 	      // push an li tag onto our array for each element in the state var
 	      taskArray.push(
-	      	<div key={index}>
-	      		<Link to={`/task/delete/${task.id}`}>{task.task_name}</Link> | 
-	      		<Link to={`/task/get/${task.id}`}>Delete</Link> | 
-	      		<Link to={`/task/edit/${task.id}`}>Edit</Link>
-	      	</div>);
+	      	<tr key={index}>
+	      		<td><Link to={`/task/get/${task.id}`}>{task.task_name}</Link></td>
+	      		<td><Link to={`/task/delete/${task.id}`}>Delete</Link></td>
+	      		<td><Link to={`/task/edit/${task.id}`}>Edit</Link></td>
+	      	</tr>);
 	    });		
 
 		return(
@@ -79,20 +79,25 @@ class Home extends Component{
 		           <img src={logo} className="App-logo" alt="logo" />
 		          <h2>Welcome to React</h2>
 		        </div>
-		        <p className="App-intro">
-		         
-		        </p>
+		        <div className="container">
+			        <form onSubmit={this.addNewTask} className="add-box">
+			          <input type="text" id="new-task" placeholder="New Task..."/>
+			          <input type="date" id="new-task-date" />
+			          <button type="submit" className="btn btn-primary">Add Task</button>
+			        </form>
 
-		        <form onSubmit={this.addNewTask} className="add-box">
-		          <input type="text" id="new-task" placeholder="New Task..."/>
-		          <input type="date" id="new-task-date" />
-		          <button type="submit" className="btn btn-primary">Add Task</button>
-		        </form>
-
-		        <p>
-		          {taskArray}
-		        </p>
-		      </div>
+			        <table className="table table-bordered">
+			        	<thead>
+			        		<th>Task</th>
+			        		<th>Delete</th>
+			        		<th>Edit</th>
+			        	</thead>
+			        	<tbody>
+			          		{taskArray}
+			          	</tbody>
+			        </table>
+			      </div>
+			    </div>
 		)
 	}
 
