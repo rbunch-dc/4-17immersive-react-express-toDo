@@ -11,12 +11,13 @@ class Home extends Component{
 		}
 		// Make sure addNewTask uses the class "this"
 		this.addNewTask = this.addNewTask.bind(this)
+		this.checkCompleted = this.checkCompleted.bind(this)
 	}
 
   // compondentDidMount runs AFTER the first render
   componentDidMount() {
     // getJSON request to localhost:3000 ... that's where Express is listening
-    $.getJSON('http://localhost:3000/getTasks', (tasksFromApi)=>{
+    $.getJSON('http://localhost:3000/getTasks?apiKey=gsdf89usf8u9uvsoijsfbdkl34tgrev', (tasksFromApi)=>{
       // log the JSON response from Express
       console.log(tasksFromApi)
       this.setState({
@@ -45,7 +46,7 @@ class Home extends Component{
 
 	    $.ajax({
 	      method: "POST",
-	      url: "http://localhost:3000/addTask",
+	      url: "http://localhost:3000/addTask?api_key=gsdf89usf8u9uvsoijsfbdkl34tgrev",
 	      data: {
 	      	taskName: newTask,
 	      	taskDate: newTaskDate
@@ -57,6 +58,22 @@ class Home extends Component{
 	    })		
 	}
 
+	checkCompleted(targetId){
+		console.log(targetId)
+	    $.ajax({
+	      method: "POST",
+	      url: "http://localhost:3000/completeTask?api_key=gsdf89usf8u9uvsoijsfbdkl34tgrev",
+	      data: {
+	      	targetId: targetId
+	      }
+	    }).done((tasksArray)=>{
+	    	console.log(tasksArray)
+	      this.setState({
+	        taskList: tasksArray
+	      })
+	    })			
+	}
+
 	render(){
 
 	    // Create an array to dump into our return. It will contain
@@ -64,10 +81,21 @@ class Home extends Component{
 	    var taskArray = [];
 	    // Loop throuhg our state var. The frist time through, it will be empty
 	    this.state.taskList.map((task,index)=>{
+	    	console.log(task)
+	    	var inlineStyle = {}
+	    	var finished = 0;
+	    	if (task.finished == 1){
+			    inlineStyle = {
+			    	"textDecoration": "line-through",
+			    	"color": "black"
+			    }
+			    finished = true;
+	    	}
 	      // push an li tag onto our array for each element in the state var
 	      taskArray.push(
 	      	<tr key={index}>
-	      		<td><Link to={`/task/get/${task.id}`}>{task.task_name}</Link></td>
+	      		<td><input checked={finished} className="circle-check" onChange={()=>{this.checkCompleted(task.id)}} type="checkbox" /><label htmlFor="circle-check" /></td>
+	      		<td><Link style={inlineStyle} to={`/task/get/${task.id}`}>{task.task_name}</Link></td>
 	      		<td><Link to={`/task/delete/${task.id}`}>Delete</Link></td>
 	      		<td><Link to={`/task/edit/${task.id}`}>Edit</Link></td>
 	      	</tr>);
@@ -88,9 +116,11 @@ class Home extends Component{
 
 			        <table className="table table-bordered">
 			        	<thead>
-			        		<th>Task</th>
-			        		<th>Delete</th>
-			        		<th>Edit</th>
+			        		<tr>
+				        		<th>Task</th>
+				        		<th>Delete</th>
+				        		<th>Edit</th>
+				        	</tr>
 			        	</thead>
 			        	<tbody>
 			          		{taskArray}

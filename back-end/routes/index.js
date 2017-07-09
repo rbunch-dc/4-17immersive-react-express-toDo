@@ -52,6 +52,16 @@ router.get('/getTask/:id', (req,res)=>{
 	})
 })
 
+router.post('/completeTask',(req, res)=>{
+	var targetId = req.body.targetId;
+	connection.query('UPDATE tasks SET finished = NOT finished WHERE id=?',[targetId],(error, results, fields)=>{
+		if(error) throw error;
+		connection.query('SELECT * FROM tasks',(error2, results2, fields2)=>{
+			res.json(results2)
+		});		
+	})
+});
+
 router.post('/deleteTask', (req,res)=>{
 	connection.query('DELETE FROM tasks WHERE id = '+req.body.taskId,(error, results)=>{
 		if(error) throw error;
